@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-warm: #FAF8F5;
+    --bg-surface: #F3EFEA;
+    --text-primary: #17181A;
+    --text-secondary: #575A61;
+    --accent-terracotta: #C04E26;
+    --accent-terracotta-hover: #A73E1B;
+    --accent-terracotta-soft: rgba(192, 78, 38, 0.08);
+    --charcoal-deep: #121315;
+    --charcoal-card: #1B1C20;
+    --border-subtle: rgba(23, 24, 26, 0.08);
+    --border-dark-subtle: rgba(255, 255, 255, 0.1);
+  }
+
+  html {
+    scroll-behavior: auto !important; /* Managed by Lenis */
+    background-color: var(--bg-warm);
+    color: var(--text-primary);
+  }
+
+  body {
+    background-color: var(--bg-warm);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::selection {
+    background-color: #C04E26;
+    color: #FFFFFF;
+  }
+}
+
+/* Lenis Recommended CSS */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Custom Typography & Utility Classes */
+.text-terracotta {
+  color: #C04E26;
+}
+
+.bg-terracotta {
+  background-color: #C04E26;
+}
+
+.bg-warm {
+  background-color: #FAF8F5;
+}
+
+.bg-surface-warm {
+  background-color: #F3EFEA;
+}
+
+.bg-charcoal {
+  background-color: #121315;
+}
+
+.border-subtle {
+  border-color: rgba(23, 24, 26, 0.1);
+}
+
+.border-subtle-dark {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Accented italic styling for hero/headlines */
+.accent-serif-word {
+  font-style: italic;
+  font-weight: 400;
+  color: #C04E26;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Smooth hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
