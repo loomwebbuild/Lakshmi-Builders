@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SERVICES, ServiceItem } from '@/lib/constants';
@@ -150,16 +151,24 @@ export function Services({ onSelectService }: ServicesProps) {
                   Service {activeDesktopService.number}
                 </span>
                 <h4 className="text-xl font-bold mb-2">{activeDesktopService.title}</h4>
-                <p className="text-xs text-white/70 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-white/70 line-clamp-2 leading-relaxed mb-4">
                   {activeDesktopService.fullDesc}
                 </p>
-                <button
-                  onClick={() => onSelectService?.(activeDesktopService.title)}
-                  className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-white bg-[#C04E26] hover:bg-[#A73E1B] px-3.5 py-2 transition-colors cursor-pointer"
-                >
-                  <span>Inquire for {activeDesktopService.title}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </button>
+                <div className="flex items-center gap-3">
+                  <Link
+                    href={`/services/${activeDesktopService.id}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3.5 py-2 transition-colors"
+                  >
+                    <span>Full Scope Specs</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <button
+                    onClick={() => onSelectService?.(activeDesktopService.title)}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#C04E26] hover:bg-[#A73E1B] px-3.5 py-2 transition-colors cursor-pointer"
+                  >
+                    <span>Get Quote</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

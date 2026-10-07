@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { COMPANY_INFO } from '@/lib/constants';
 import { Phone, Menu, X, ArrowUpRight } from 'lucide-react';
 
@@ -9,29 +11,32 @@ interface NavbarProps {
 }
 
 export function Navbar({ onOpenInquiry }: NavbarProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+  const [hasScrolledPast80, setHasScrolledPast80] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (!isHome) return;
+
     const handleScroll = () => {
-      if (window.scrollY > 80) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setHasScrolledPast80(window.scrollY > 80);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHome]);
+
+  const isScrolled = !isHome || hasScrolledPast80;
+
 
   const navLinks = [
-    { label: 'Services', href: '#services' },
-    { label: 'Why Us', href: '#why-us' },
-    { label: 'Process', href: '#process' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Home', href: '/' },
+    { label: 'Services', href: '/services' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'About', href: '/about' },
+    { label: 'Process', href: '/process' },
+    { label: 'Contact', href: '/contact' },
   ];
 
   return (
@@ -40,13 +45,13 @@ export function Navbar({ onOpenInquiry }: NavbarProps) {
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
             ? 'bg-[#FAF8F5]/95 backdrop-blur-md text-[#17181A] border-b border-black/5 shadow-xs py-3.5'
-            : 'bg-gradient-to-b from-black/70 via-black/30 to-transparent text-white py-5'
+            : 'bg-gradient-to-b from-black/75 via-black/35 to-transparent text-white py-5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Zone 1: Single Text Element Wordmark */}
-          <a
-            href="#"
+          <Link
+            href="/"
             className="group flex items-center gap-2 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#C04E26]"
             aria-label="Lakshmi Builders - Home"
           >
@@ -54,23 +59,35 @@ export function Navbar({ onOpenInquiry }: NavbarProps) {
               Lakshmi Builders
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#C04E26] group-hover:scale-125 transition-transform" />
-          </a>
+          </Link>
 
           {/* Zone 2: Clean Text Navigation Links */}
           <nav className="hidden md:flex items-center gap-7 text-sm font-medium">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`transition-colors relative py-1 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#C04E26] rounded-xs ${
-                  isScrolled
-                    ? 'text-[#575A61] hover:text-[#17181A]'
-                    : 'text-white/80 hover:text-white'
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === '/'
+                  ? pathname === '/'
+                  : pathname.startsWith(link.href);
+
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={`transition-colors relative py-1 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#C04E26] rounded-xs ${
+                    isActive
+                      ? 'text-[#C04E26] font-semibold'
+                      : isScrolled
+                      ? 'text-[#575A61] hover:text-[#17181A]'
+                      : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C04E26] rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Zone 3: Primary Actions */}
@@ -114,7 +131,7 @@ export function Navbar({ onOpenInquiry }: NavbarProps) {
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-xs md:hidden"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs md:hidden"
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
@@ -124,16 +141,26 @@ export function Navbar({ onOpenInquiry }: NavbarProps) {
             <div className="text-xs font-semibold tracking-wider text-[#575A61] uppercase pb-2 border-b border-black/10">
               Navigation
             </div>
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-lg font-semibold text-[#17181A] hover:text-[#C04E26] py-2 border-b border-black/5 transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === '/'
+                  ? pathname === '/'
+                  : pathname.startsWith(link.href);
+
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-lg font-semibold py-2 border-b border-black/5 transition-colors flex items-center justify-between ${
+                    isActive ? 'text-[#C04E26]' : 'text-[#17181A] hover:text-[#C04E26]'
+                  }`}
+                >
+                  <span>{link.label}</span>
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#C04E26]" />}
+                </Link>
+              );
+            })}
 
             <div className="pt-4 flex flex-col gap-3">
               <a
@@ -148,7 +175,7 @@ export function Navbar({ onOpenInquiry }: NavbarProps) {
                   setMobileMenuOpen(false);
                   onOpenInquiry?.();
                 }}
-                className="w-full py-3 bg-[#C04E26] text-white text-sm font-semibold text-center rounded-xs shadow-xs"
+                className="w-full py-3 bg-[#C04E26] text-white text-sm font-semibold text-center rounded-xs shadow-xs cursor-pointer"
               >
                 Request Free Consultation
               </button>
@@ -159,3 +186,4 @@ export function Navbar({ onOpenInquiry }: NavbarProps) {
     </>
   );
 }
+

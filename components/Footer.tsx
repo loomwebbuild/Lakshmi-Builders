@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { COMPANY_INFO, SERVICES } from '@/lib/constants';
 import { MapPin, Phone, Mail, Instagram, Clock, ArrowUpRight } from 'lucide-react';
 
@@ -13,12 +14,12 @@ export function Footer() {
           {/* Col 1: Brand & Official Address */}
           <div className="lg:col-span-4 flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="font-bold text-xl uppercase tracking-tight text-white">
+              <Link href="/" className="flex items-center gap-2 mb-4 group inline-block">
+                <span className="font-bold text-xl uppercase tracking-tight text-white group-hover:text-[#E87349] transition-colors">
                   Lakshmi Builders
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C04E26]" />
-              </div>
+              </Link>
 
               <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-sm mb-6">
                 Specialized in Building Construction, Renovation Work, Interior Design, and Building Plan Approval in Mount Road, Chennai.
@@ -73,34 +74,33 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Col 2: Services & Navigation */}
+          {/* Col 2: Services & Quick Links */}
           <div className="lg:col-span-3">
             <h3 className="text-xs font-mono font-bold tracking-widest uppercase text-[#C04E26] mb-6">
               Our Core Services
             </h3>
-            <ul className="space-y-3 text-xs sm:text-sm text-white/70">
+            <ul className="space-y-3 text-xs sm:text-sm text-white/70 mb-8">
               {SERVICES.map((s) => (
                 <li key={s.id}>
-                  <a
-                    href="#services"
+                  <Link
+                    href={`/services/${s.id}`}
                     className="hover:text-white transition-colors flex items-center gap-2 group"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-[#C04E26] transition-colors" />
                     <span>{s.title}</span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
 
-            <h3 className="text-xs font-mono font-bold tracking-widest uppercase text-[#C04E26] mt-8 mb-4">
-              Office Hours
+            <h3 className="text-xs font-mono font-bold tracking-widest uppercase text-[#C04E26] mb-3">
+              Explore Pages
             </h3>
-            <div className="flex items-start gap-2 text-xs text-white/70">
-              <Clock className="w-4 h-4 text-white/40 shrink-0 mt-0.5" />
-              <div>
-                <span>Mon – Sat: 09:00 AM – 07:30 PM</span>
-                <span className="block text-white/40">Sunday: By Technical Appointment</span>
-              </div>
+            <div className="grid grid-cols-2 gap-2 text-xs text-white/70">
+              <Link href="/about" className="hover:text-white transition-colors">About Us</Link>
+              <Link href="/process" className="hover:text-white transition-colors">4-Stage Process</Link>
+              <Link href="/projects" className="hover:text-white transition-colors">Projects Portfolio</Link>
+              <Link href="/contact" className="hover:text-white transition-colors">Contact Office</Link>
             </div>
           </div>
 
@@ -155,3 +155,4 @@ export function Footer() {
     </footer>
   );
 }
+

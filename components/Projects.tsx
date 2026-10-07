@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS, ProjectItem, COMPANY_INFO } from '@/lib/constants';
-import { ArrowUpRight, X, MapPin, Maximize2, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, X, MapPin, Maximize2, CheckCircle2 } from 'lucide-react';
 
 interface ProjectsProps {
   onOpenInquiry?: (projectName?: string) => void;
@@ -160,6 +161,17 @@ export function Projects({ onOpenInquiry }: ProjectsProps) {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View All Projects Action Link */}
+        <div className="mt-12 text-center">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#121315] hover:bg-[#1E2024] text-white text-xs font-semibold uppercase tracking-wider transition-colors rounded-xs shadow-md"
+          >
+            <span>Explore Complete Portfolio ({COMPANY_INFO.completedProjectsCount})</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
 

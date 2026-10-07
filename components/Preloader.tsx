@@ -13,12 +13,18 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const textRef = useRef<HTMLDivElement>(null);
   const subtextRef = useRef<HTMLDivElement>(null);
   const progressLineRef = useRef<HTMLDivElement>(null);
-  const [isRemoved, setIsRemoved] = useState(false);
+  const [isRemoved, setIsRemoved] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('lakshmi_preloader_seen') === 'true';
+    }
+    return false;
+  });
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasSeen = sessionStorage.getItem('lakshmi_preloader_seen') === 'true';
 
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || hasSeen) {
       const timer = setTimeout(() => {
         setIsRemoved(true);
         onComplete?.();
@@ -29,10 +35,12 @@ export function Preloader({ onComplete }: PreloaderProps) {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {
+          sessionStorage.setItem('lakshmi_preloader_seen', 'true');
           setIsRemoved(true);
           onComplete?.();
         },
       });
+
 
       // Initial state
       gsap.set(logoRef.current, { opacity: 0, scale: 0.9, y: 15 });
